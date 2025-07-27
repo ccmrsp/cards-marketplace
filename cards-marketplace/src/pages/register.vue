@@ -2,7 +2,7 @@
   <div class="max-w-sm mx-auto">
     <!-- Título da página de registro -->
     <h1 class="text-2xl font-bold mb-6 text-center text-gray-300">
-      Criar conta
+      Criar Conta
     </h1>
 
     <form @submit.prevent="register" class="space-y-4">
