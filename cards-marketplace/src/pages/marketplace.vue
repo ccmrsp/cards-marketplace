@@ -55,13 +55,7 @@
       </div>
     </div>
 
-    <!-- Botão para recarregar trocas -->
-    <button
-      @click="fetchTrades(true)"
-      class="mt-12 px-6 py-2 bg-black text-white rounded-full hover:bg-purple-700"
-    >
-      Recarregar Trocas
-    </button>
+ 
 
     <!-- Cartas disponíveis -->
     <h2 class="text-4xl font-bold mb-4 mt-16">Cartas disponíveis</h2>

@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-sm mx-auto">
+  <div class="max-w-sm  mt-10  rounded-lg shadow-md">
 
     <!-- Título da página de recuperação -->
     <h1 class="text-2xl font-bold mb-6 text-center text-gray-300">
@@ -14,7 +14,7 @@
         v-model="email"
         type="email"
         placeholder="Email"
-        class="w-full p-2 border border-gray-600 rounded-full shadow-md transition-all hover:shadow-md hover:shadow-purple-800"
+        class="w-full p-2  border border-gray-600 rounded-full shadow-md transition-all hover:shadow-md hover:shadow-purple-800"
       />
 
       <!-- Botão Recupere sua senha -->

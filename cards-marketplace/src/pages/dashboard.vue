@@ -1,12 +1,12 @@
 <template>
-  <div class="mt-5 p-12 relative">
+  <div class="!mt-15  sm:!px-8 relative !max-w-screen-sm !mx-auto md:!max-w-full !overflow-hidden">
     <!-- 1) Minhas Cartas -->
-    <h2 class="text-2xl font-semibold">Minhas Cartas</h2>
-    <p v-if="loadingCards">Carregando cartas…</p>
-    <p v-else-if="errorCards" class="text-red-500">{{ errorCards }}</p>
+    <h2 class="text-2xl font-semibold text-center ">Minhas Cartas</h2>
+    <p v-if="loadingCards" class="text-center">Carregando cartas…</p>
+    <p v-else-if="errorCards" class="text-red-500 text-center">{{ errorCards }}</p>
 
     <!-- Cartas do usuário com imagens reais -->
-    <div class="mt-4 mb-4 grid grid-cols-4 gap-4">
+    <div class="mt-4 mb-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 ">
       <div
         v-for="card in cardsUser"
         :key="card.id"
@@ -23,7 +23,7 @@
     </div>
 
     <!-- Botão Adicionar Carta -->
-    <div class="flex items-center gap-4">
+    <div class="flex justify-center items-center">
       <button
         @click="showAddModal = true"
         class="mt-8 !bg-purple-800 !text-gray-300 py-2 px-4 rounded-full shadow-md transition-all hover:!bg-gray-200 hover:shadow-purple-800 hover:!text-purple-800"
@@ -32,124 +32,112 @@
       </button>
     </div>
 
-<!-- Modal de Adição de Carta -->
-<div
-  v-if="showAddModal"
-  class="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
-  @click.self="showAddModal = false"
->
-  <div class="bg-white rounded-lg w-96 p-6 relative">
-    
-    <!-- Botão de Fechar -->
-    <button
-      class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center !bg-gray-300 rounded-full text-gray-600 hover:!bg-purple-200 hover:!text-purple-800 text-base"
-      @click="showAddModal = false"
+    <!-- Modal de Adição de Carta -->
+    <div
+      v-if="showAddModal"
+      class="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
+      @click.self="showAddModal = false"
     >
-      ×
-    </button>
-
-    <!-- Título -->
-    <h3 class="text-xl font-semibold mb-4 text-neutral-800">Adicionar Carta</h3>
-
-    <!-- Campo Select com título -->
-    <div class="flex flex-col mb-4">
-      <label class="mb-1 text-sm font-medium text-neutral-700">Selecione uma carta</label>
-      <select
-        v-model="selectedCardId"
-        class="w-full p-2 border border-gray-300 !text-neutral-800 rounded-full focus:outline-none">
-        <option v-for="card in cardsAll" :key="card.id" :value="card.id">
-          {{ card.name }}
-        </option>
-      </select>
+      <div class="bg-white rounded-lg w-11/12 max-w-md p-6 relative">
+        <button
+          class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center !bg-gray-300 rounded-full text-gray-600 hover:!bg-purple-200 hover:!text-purple-800 text-base"
+          @click="showAddModal = false"
+        >
+          ×
+        </button>
+        <h3 class="text-xl font-semibold mb-4 text-neutral-800">Adicionar Carta</h3>
+        <div class="flex flex-col mb-4">
+          <label class="mb-1 text-sm font-medium text-neutral-700">Selecione uma carta</label>
+          <select
+            v-model="selectedCardId"
+            class="w-full p-2 border border-gray-300 !text-neutral-800 rounded-full focus:outline-none">
+            <option v-for="card in cardsAll" :key="card.id" :value="card.id">
+              {{ card.name }}
+            </option>
+          </select>
+        </div>
+        <button
+          :disabled="!selectedCardId"
+          @click="handleUploadCard"
+          class="w-full !bg-purple-800 text-white px-4 py-2 rounded-full transition hover:!bg-purple-600"
+        >
+          Adicionar à minha conta
+        </button>
+      </div>
     </div>
-
-    <!-- Botão de Adicionar -->
-    <button
-      :disabled="!selectedCardId"
-      @click="handleUploadCard"
-      class="w-full !bg-purple-800 text-white px-4 py-2 rounded-full transition  hover:!bg-purple-600"
-    >
-      Adicionar à minha conta
-    </button>
-  </div>
-</div>
 
     <!-- 5) Minhas Solicitações de Troca -->
-    <h2 class="mt-8 text-2xl font-semibold">Minhas Solicitações de Troca</h2>
+    <h2 class="mt-8 text-2xl font-semibold text-center">Minhas Solicitações de Troca</h2>
 
-   <!-- Formulário Inline -->
-<div class="bg-white p-6 rounded shadow mt-4 max-w-3xl mx-auto text-center">
-  <h3 class="text-lg font-semibold mb-4 text-neutral-700">Criar nova troca</h3>
-  <div class="flex flex-col sm:flex-row gap-4 justify-center items-end">
-    
-    <!-- Campo Tenho -->
-    <div class="flex flex-col w-full sm:w-1/3">
-      <label class="mb-1 text-sm font-medium text-neutral-700">Tenho</label>
-      <select
-        v-model="selectedOfferId"
-        class="p-2 border-2 border-gray-300 !text-neutral-700 rounded-full focus:outline-none"
-      >
-        <option disabled value="">
-          {{ selectedOfferLabel || 'Selecione' }}
-        </option>
-        <option v-for="card in cardsUser" :key="card.id" :value="card.id">
-          {{ card.name }}
-        </option>
-      </select>
+    <!-- Formulário Inline -->
+    <div class="bg-white p-6 rounded shadow mt-4 max-w-3xl mx-auto text-center">
+      <h3 class="text-lg font-semibold mb-4 text-neutral-700">Criar nova troca</h3>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-end">
+        <div class="flex flex-col w-full sm:w-1/3">
+          <label class="mb-1 text-sm font-medium text-neutral-700">Tenho</label>
+          <select
+            v-model="selectedOfferId"
+            class="p-2 border-2 border-gray-300 !text-neutral-700 rounded-full focus:outline-none"
+          >
+            <option disabled value="">
+              {{ selectedOfferLabel || 'Selecione' }}
+            </option>
+            <option v-for="card in cardsUser" :key="card.id" :value="card.id">
+              {{ card.name }}
+            </option>
+          </select>
+        </div>
+        <div class="flex flex-col w-full sm:w-1/3">
+          <label class="mb-1 text-sm font-medium text-neutral-700">Quero</label>
+          <select
+            v-model="selectedRequestId"
+            class="p-2 border-2 border-gray-300 !text-neutral-700 rounded-full focus:outline-none"
+          >
+            <option disabled value="">
+              {{ selectedRequestLabel || 'Selecione' }}
+            </option>
+            <option v-for="card in cardsAll" :key="card.id" :value="card.id">
+              {{ card.name }}
+            </option>
+          </select>
+        </div>
+        <button
+          @click="submitTrade"
+          :disabled="!selectedOfferId || !selectedRequestId"
+          class="!bg-purple-800 text-white px-6 py-2 rounded-full hover:!bg-purple-600 transition">
+          Criar Troca
+        </button>
+      </div>
     </div>
 
-    <!-- Campo Quero -->
-    <div class="flex flex-col w-full sm:w-1/3">
-      <label class="mb-1 text-sm font-medium text-neutral-700">Quero</label>
-      <select
-        v-model="selectedRequestId"
-        class="p-2 border-2 border-gray-300 !text-neutral-700 rounded-full focus:outline-none"
-      >
-        <option disabled value="">
-          {{ selectedRequestLabel || 'Selecione' }}
-        </option>
-        <option v-for="card in cardsAll" :key="card.id" :value="card.id">
-          {{ card.name }}
-        </option>
-      </select>
+    <!-- Listagem de trocas -->
+    <div class="text-center">
+      <button
+        @click="reloadUserTrades"
+        class="mt-4 mb-4 !bg-purple-800 text-white px-6 py-2 rounded-full hover:!bg-gray-200 hover:text-purple-800 transition-all">
+        Recarregar Minhas Trocas
+      </button>
     </div>
 
-    <!-- Botão Criar Troca -->
-    <button
-      @click="submitTrade"
-      :disabled="!selectedOfferId || !selectedRequestId"
-      class="!bg-purple-800 text-white px-6 py-2 rounded-full hover:!bg-purple-600 transition">
-      Criar Troca
-    </button>
-  </div>
-</div>
-    <!-- Listagem de trocas -->
-    <button
-      @click="reloadUserTrades"
-      class="mt-4 mb-4  !bg-purple-800 text-white px-6 py-2 rounded-full hover:!bg-gray-200 hover:text-purple-800 transition-all">
-      Recarregar Minhas Trocas
-    </button>
-
-    <!-- Listagem de trocas -->
-    <p v-if="loadingTrades">Carregando suas trocas…</p>
-    <p v-else-if="errorTrades" class="text-red-500">{{ errorTrades }}</p>
+    <p v-if="loadingTrades" class="text-center">Carregando suas trocas…</p>
+    <p v-else-if="errorTrades" class="text-red-500 text-center">{{ errorTrades }}</p>
     <ul v-else-if="tradesUser.length" class="space-y-4">
-      <li v-for="trade in tradesUser" :key="trade.id" class="p-4 !bg-purple-200/1 rounded shadow">
+      <li v-for="trade in tradesUser" :key="trade.id" class="p-4 !bg-purple-200/10 rounded shadow text-center">
         <p class="font-semibold text-xl text-neutral-100">
           Solicitação de {{ trade.user?.name || 'Usuário' }}
         </p>
-            <div class="flex justify-center gap-12 mt-4">
-                <div class="text-center">
-                  <p class="text-xm mb-2 text-gray-200">Oferecendo</p>
-                  <img :src="getCardImage(trade.tradeCards, 'OFFERING')" class="h-32 mx-auto" />
-                  <p class="text-sm">{{ getCardName(trade.tradeCards, 'OFFERING') }}</p>
-                </div>
-                <div class="text-center">
-                  <p class="text-xm mb-2 text-gray-200">Desejando</p>
-                  <img :src="getCardImage(trade.tradeCards, 'RECEIVING')" class="h-32 mx-auto" />
-                  <p class="text-sm">{{ getCardName(trade.tradeCards, 'RECEIVING') }}</p>
-                </div>
-              </div>
+        <div class="flex flex-col md:flex-row justify-center gap-8 mt-4 items-center">
+          <div class="text-center">
+            <p class="text-xm mb-2 text-gray-200">Oferecendo</p>
+            <img :src="getCardImage(trade.tradeCards, 'OFFERING')" class="h-32 mx-auto" />
+            <p class="text-sm">{{ getCardName(trade.tradeCards, 'OFFERING') }}</p>
+          </div>
+          <div class="text-center">
+            <p class="text-xm mb-2 text-gray-200">Desejando</p>
+            <img :src="getCardImage(trade.tradeCards, 'RECEIVING')" class="h-32 mx-auto" />
+            <p class="text-sm">{{ getCardName(trade.tradeCards, 'RECEIVING') }}</p>
+          </div>
+        </div>
         <button
           @click="handleDeleteTrade(trade.id)"
           class="!bg-gray-500 text-white px-6 py-2 rounded-full mt-5 hover:!bg-purple-600 transition">
@@ -157,7 +145,7 @@
         </button>
       </li>
     </ul>
-    <p v-else class="text-sm text-gray-400">Nenhuma troca encontrada</p>
+    <p v-else class="text-sm text-gray-400 text-center">Nenhuma troca encontrada</p>
   </div>
 </template>
 
